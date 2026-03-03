@@ -22,8 +22,11 @@ export default function AuthPage() {
                 localStorage.setItem('token', res.access_token);
                 router.push('/dashboard');
             }
-        } catch (error) {
-            alert("Authentication failed. Please check credentials or if user already exists.");
+        } catch (error: any) {
+            console.error('Auth error:', error);
+            const backendError = error.response?.data?.detail;
+            const errMsg = Array.isArray(backendError) ? backendError[0].msg : backendError;
+            alert(errMsg || "Authentication failed. Please check if the server is running or if the email is valid.");
         }
     };
 
